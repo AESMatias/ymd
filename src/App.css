@@ -114,3 +114,9 @@ button {
     background-color: #0f0f0f69;
   }
 }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}

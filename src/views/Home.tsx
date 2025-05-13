@@ -1,10 +1,9 @@
 // src/views/Home.tsx
 import { useState } from 'react';
-import {
-  listFormats,
-  downloadVideoInFormat,
-  type Format,
-} from '../services/ytDlpService';
+import { listFormats, downloadVideoInFormat, Format } from '../services/ytDlpService';
+import { SearchBar } from '../components/SearchBar/SearchBar';
+import { VideoViewer } from '../components/VideoViewer/VideoViewer';
+import { DownloadOptions } from '../components/DowloadOptions/DownloadOptions';
 
 export function Home() {
   const [url, setUrl] = useState('');
@@ -22,7 +21,7 @@ export function Home() {
       setStatusMessage(fmts.length ? 'Formats loaded.' : 'No formats found.');
     } catch (err) {
       console.error(err);
-      setStatusMessage('Error fetching formats.');
+      setStatusMessage('Error fetching formats: ' + (err as Error).message);
     }
   };
 
@@ -39,49 +38,29 @@ export function Home() {
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: '2rem auto', padding: '0 1rem' }}>
+    <div style={{ padding: '0rem', width: '100%',
+      display: 'flex', flexDirection: 'column', alignItems: 'center',
+      backgroundColor: 'red'
+     }}>
+
+      <SearchBar
+        url={url}
+        cookiesPath={cookiesPath}
+        onUrlChange={setUrl}
+        onCookiesPathChange={setCookiesPath}
+        onListFormats={handleListFormats}
+      />
+
       <h1>YT Downloader</h1>
 
-      <input
-        type="text"
-        placeholder="Video URL..."
-        value={url}
-        onChange={(e) => setUrl(e.target.value)}
-        style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem' }}
+      <VideoViewer formats={formats} />
+
+      <DownloadOptions
+        formats={formats}
+        selectedFormat={selectedFormat}
+        onFormatChange={setSelectedFormat}
+        onDownload={handleDownload}
       />
-
-      <input
-        type="text"
-        placeholder="Cookies path (optional)..."
-        value={cookiesPath}
-        onChange={(e) => setCookiesPath(e.target.value)}
-        style={{ width: '100%', padding: '0.5rem', marginBottom: '1rem' }}
-      />
-
-      <button type="button" onClick={handleListFormats} disabled={!url}>
-        List Formats
-      </button>
-
-      {formats.length > 0 && (
-        <>
-          <select
-            value={selectedFormat}
-            onChange={(e) => setSelectedFormat(e.target.value)}
-            style={{ display: 'block', width: '100%', margin: '1rem 0' }}
-          >
-            <option value="">-- Select format --</option>
-            {formats.map((fmt) => (
-              <option key={fmt.format_id} value={fmt.format_id}>
-                {fmt.resolution} ({fmt.ext})
-              </option>
-            ))}
-          </select>
-
-          <button type="button"  onClick={handleDownload} disabled={!selectedFormat}>
-            Download
-          </button>
-        </>
-      )}
 
       {statusMessage && <p>{statusMessage}</p>}
     </div>
