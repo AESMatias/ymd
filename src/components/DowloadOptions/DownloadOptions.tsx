@@ -13,27 +13,67 @@ export function DownloadOptions({
   selectedFormat,
   onFormatChange,
   onDownload,
+  statusMessage
 }: Readonly<Props>) {
-  if (formats.length === 0) return null;
+  // if (formats.length === 0) return null;
+
+
+  // Once we have the formats, we change the virtualFormats to the formats in all the code below!
+  const virtualFormats: Format[] = [
+    {
+      format_id: '1',
+      resolution: '1080p',
+      ext: 'mp4',
+    },
+    {
+      format_id: '2',
+      resolution: '720p',
+      ext: 'mp4'
+    },
+    {
+      format_id: '3',
+      resolution: '480p',
+      ext: 'mp4'
+    },
+  ];
 
   return (
-    <div className={styles.mainDiv} >
-      <select
-        value={selectedFormat}
-        onChange={(e) => onFormatChange(e.target.value)}
-        style={{ display: 'block', width: '100%', margin: '1rem 0' }}
-      >
-        <option value="">-- Select format --</option>
-        {formats.map((fmt) => (
-          <option key={fmt.format_id} value={fmt.format_id}>
-            {fmt.resolution} ({fmt.ext})
-          </option>
-        ))}
-      </select>
+    <div className={styles.mainDiv}>
+        <div className={styles.optionsDiv}>
+            <h4 className={styles.title}>Download Options</h4>
+            <select
+                className={styles.formatSelectNative}
+                value={selectedFormat}
+                onChange={(e) => onFormatChange(e.target.value)}
+                // You might still want a default empty option
+            >
+                <option value="">-- Select format --</option> {/* Default/placeholder option */}
+                {virtualFormats.map((fmt) => (
+                    <option key={fmt.format_id} value={fmt.format_id}>
+                        {/* Content of each dropdown item */}
+                         {/* You can only put text here */}
+                        {`${fmt.resolution || 'N/A'} (${fmt.ext})`}
+                    </option>
+                ))}
+            </select>
+        </div>
+        
+        <div className={styles.buttonDiv}>
+            <button
+                onClick={onDownload}
+                disabled={!selectedFormat}
+                className={styles.downloadButton}
+          >
+              Download
+          </button>
 
-      <button onClick={onDownload} disabled={!selectedFormat}>
-        Download
-      </button>
+      {statusMessage && <p className={statusMessage.includes('Error') 
+        ? styles.errorMessage : styles.successMessage}>
+                    {statusMessage}
+                 </p>}
+        </div>
+
+
     </div>
   );
 }

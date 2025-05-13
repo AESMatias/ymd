@@ -37,19 +37,24 @@ export function Home() {
   };
 
   return (
-    <div style={{ padding: '0rem', width: '100%',
-      display: 'flex', flexDirection: 'column', alignItems: 'center',
-      backgroundColor: 'red'
+    <div style={{
+      margin: 0,
+      padding: 0,
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center',
+      boxSizing: 'border-box',
+      height: '100vh',
+      overflow: 'hidden',
     }}>
+      
 
       <SearchBar
         url={url}
         onUrlChange={setUrl}
         onListFormats={handleListFormats}
       />
-
-      <h1>YT Downloader</h1>
-
+  
       <VideoViewer formats={formats} />
 
       <DownloadOptions
@@ -57,9 +62,9 @@ export function Home() {
         selectedFormat={selectedFormat}
         onFormatChange={setSelectedFormat}
         onDownload={handleDownload}
+        statusMessage={statusMessage}
       />
 
-      {statusMessage && <p>{statusMessage}</p>}
     </div>
   );
 }
