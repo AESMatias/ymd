@@ -5,7 +5,7 @@ interface Props {
   formats: Format[];
 }
 
-export function VideoViewer({ formats }: Props) {
+export function VideoViewer({ formats }: Readonly<Props>) {
   return (
     <div className={styles.VideoViewerDiv}>
       {formats.length === 0 ? (

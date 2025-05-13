@@ -7,7 +7,6 @@ import { DownloadOptions } from '../components/DowloadOptions/DownloadOptions';
 
 export function Home() {
   const [url, setUrl] = useState('');
-  const [cookiesPath, setCookiesPath] = useState('');
   const [formats, setFormats] = useState<Format[]>([]);
   const [selectedFormat, setSelectedFormat] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
@@ -16,7 +15,7 @@ export function Home() {
     if (!url) return;
     setStatusMessage('Fetching formats...');
     try {
-      const fmts = await listFormats(url, cookiesPath || undefined);
+      const fmts = await listFormats(url);
       setFormats(fmts);
       setStatusMessage(fmts.length ? 'Formats loaded.' : 'No formats found.');
     } catch (err) {
@@ -29,7 +28,7 @@ export function Home() {
     if (!url || !selectedFormat) return;
     setStatusMessage('Downloading...');
     try {
-      await downloadVideoInFormat(url, selectedFormat, cookiesPath || undefined);
+      await downloadVideoInFormat(url, selectedFormat);
       setStatusMessage('Download completed.');
     } catch (err) {
       console.error(err);
@@ -41,13 +40,11 @@ export function Home() {
     <div style={{ padding: '0rem', width: '100%',
       display: 'flex', flexDirection: 'column', alignItems: 'center',
       backgroundColor: 'red'
-     }}>
+    }}>
 
       <SearchBar
         url={url}
-        cookiesPath={cookiesPath}
         onUrlChange={setUrl}
-        onCookiesPathChange={setCookiesPath}
         onListFormats={handleListFormats}
       />
 

@@ -8,19 +8,16 @@ export interface Format {
 
 export function listFormats(
   url: string,
-  cookiesPath?: string
 ): Promise<Format[]> {
-  return invoke('list_formats', { url, cookies: cookiesPath ?? null });
+  return invoke('list_formats', { url });
 }
 
 export function downloadVideoInFormat(
   url: string,
   formatId: string,
-  cookiesPath?: string
 ): Promise<void> {
   return invoke('download_video_in_format', {
     url,
     formatId,
-    cookies: cookiesPath ?? null,
   });
 }

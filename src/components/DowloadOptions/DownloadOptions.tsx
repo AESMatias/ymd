@@ -13,7 +13,7 @@ export function DownloadOptions({
   selectedFormat,
   onFormatChange,
   onDownload,
-}: Props) {
+}: Readonly<Props>) {
   if (formats.length === 0) return null;
 
   return (

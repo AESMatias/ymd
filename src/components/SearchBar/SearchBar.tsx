@@ -16,19 +16,15 @@ export function Button({ onClick, children }: Readonly<ButtonProps>) {
 
 interface Props {
   url: string;
-  cookiesPath: string;
   onUrlChange: (value: string) => void;
-  onCookiesPathChange: (value: string) => void;
   onListFormats: () => void;
 }
 
 export function SearchBar({
   url,
-  cookiesPath,
   onUrlChange,
-  onCookiesPathChange,
   onListFormats,
-}: Props) {
+}: Readonly<Props>) {
   return (
     <div className={styles.mainDiv}>
       <div className={styles.internalDiv}>
@@ -37,13 +33,6 @@ export function SearchBar({
           placeholder="Video URL..."
           value={url}
           onChange={(e) => onUrlChange(e.target.value)}
-          className={styles.input}
-        />
-        <input
-          type="text"
-          placeholder="Cookies path (optional)..."
-          value={cookiesPath}
-          onChange={(e) => onCookiesPathChange(e.target.value)}
           className={styles.input}
         />
         <button onClick={onListFormats} disabled={!url} className={styles.btn}>
