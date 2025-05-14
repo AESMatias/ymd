@@ -35,6 +35,20 @@ pub fn download_video(url: &str, format_id: &str) -> Result<()> {
     cmd.arg(url);
 
     let status = cmd.status().context("Failed to run yt-dlp for download")?;
+    
+    if status.success() {
+        Ok(())
+    } else {
+        Err(anyhow::anyhow!("yt-dlp download failed"))
+    }
+}
+
+pub fn download_music(url: &str, format_id: &str) -> Result<()> {
+    let mut cmd: Command = Command::new("yt-dlp");
+    cmd.args(["-f", format_id]);
+    cmd.arg(url);
+
+    let status = cmd.status().context("Failed to run yt-dlp for download")?;
     if status.success() {
         Ok(())
     } else {
